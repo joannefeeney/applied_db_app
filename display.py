@@ -1,3 +1,6 @@
+# Python app for Applied Databases module - ATU Galway
+# By Joanne Feeney
+
 import applied_db
 
 def main():
