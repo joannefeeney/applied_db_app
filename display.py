@@ -12,15 +12,22 @@ def main():
         choice = input("Enter choice: ")
         if (choice == "1"):
             ### View Cities by country
-            '''country = input("Country: ")
-            population = input("Population: ")
-            twinned_city = input("Twinned_city: ")
-            applied_db.add_city(country, population, twinned_city)
-            display_menu()'''
+            countrycode = input("Country Code: ")
+            applied_db.view_city_by_country(ID, Name, CountryCode, District, Population, latitude, longitude)
+            print("Cities by Country: ")
+            display_menu()
         elif (choice == "2"):
             ### Update city population 
         elif (choice == "3"):
             ### Add new person
+            personID = input("ID: ")
+            personname = input("Name: ")
+            age = input("Age: ")
+            salary = input("Salary: ")
+            city = input("City: ")
+            applied_db.add_person(personID, personname, age, salary, city)
+            print("Person added")
+            display_menu()
         elif (choice == "4"):
             ### Delete person
         elif (choice == "5"):
@@ -33,9 +40,13 @@ def main():
             print("Exiting application")
             return True
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid choice. Please try again")
             break
-
+            '''country = input("Country: ")
+            population = input("Population: ")
+            twinned_city = input("Twinned_city: ")
+            applied_db.add_city(country, population, twinned_city)
+            display_menu()'''
 
 # Display menu
 def display_menu():

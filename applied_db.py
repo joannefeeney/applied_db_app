@@ -6,9 +6,6 @@
 import pymysql
 import pymysql.cursors
 
-import appDBproj_MySql
-import appDBCity_Neo4j
-
 # 3 Add person function
 def add_person(personID, personname, age, salary, city):
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
@@ -31,19 +28,34 @@ def add_person(personID, personname, age, salary, city):
 def view_city_by_country(ID, Name, CountryCode, District, Population, latitude, longitude):
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
 
-    sql = '''
+    sql = """
+    SELECT ID, Name, CountryCode, District, Population, latitude, longitude
+    FROM city_table
+    WHERE CountryCode = %s
+    """
+
+    with db:
+        cursor = db.cursor()
+        cursor.execute(sql, (ID, Name, CountryCode, District, Population, latitude, longitude))
+        return cursor.fetchall()
+        cursor.close()
+        return results
+
+
+'''sql =
             select ct.country, ct.population, ct.twinned_city
             from city_table ct
             inner join country_table cot
                 on ct.country = cot.country
             where name like %s
-          '''
+
     with db:
         cursor = db.cursor()
         cursor.execute(sql, ("%"+country+"%"))
-        return cursor.fetchall()
+        return cursor.fetchall()'''
 
-# 2 Update city population function
+
+'''# 2 Update city population function
 def update_city_pop(population):
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
 
@@ -73,4 +85,4 @@ def show_twin_cities(ID, Name, CountryCode, District, Population, latitude, long
 def twin_with_dub(ID, Name, CountryCode, District, Population, latitude, longitude):
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
 
-    sql = 
+    sql = '''
