@@ -13,12 +13,13 @@ def main():
         if (choice == "1"):
             ### View Cities by country
             countrycode = input("Country Code: ")
-            applied_db.view_city_by_country(ID, Name, CountryCode, District, Population, latitude, longitude)
+            applied_db.view_city_by_country(id, Name, CountryCode, District, Population, latitude, longitude)
             print("Cities by Country: ")
             display_menu()
-        elif (choice == "2"):
+        if (choice == "2"):
             ### Update city population 
-        elif (choice == "3"):
+            print("TBD: ")
+        if (choice == "3"):
             ### Add new person
             personID = input("ID: ")
             personname = input("Name: ")
@@ -28,15 +29,19 @@ def main():
             applied_db.add_person(personID, personname, age, salary, city)
             print("Person added")
             display_menu()
-        elif (choice == "4"):
+        if (choice == "4"):
             ### Delete person
-        elif (choice == "5"):
+            print("TBD: ")
+        if (choice == "5"):
             ### view countries by population
-        elif (choice == "6"):
+            print("TBD: ")
+        if (choice == "6"):
             ### Show twinned cities
-        elif (choice == "7"):
+            print("TBD: ")
+        if (choice == "7"):
             ### Twin with Dublin
-        elif (choice == "x"):
+            print("TBD: ")
+        if (choice == "x"):
             print("Exiting application")
             return True
         else:

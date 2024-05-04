@@ -8,7 +8,7 @@ import pymysql.cursors
 
 # 3 Add person function
 def add_person(personID, personname, age, salary, city):
-    db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
+    db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj", cursorclass=pymysql.cursors.DictCursor)
 
     sql = "INSERT INTO person_table VALUES (%s, %s, %s, %s, %s)"
     
@@ -21,11 +21,11 @@ def add_person(personID, personname, age, salary, city):
             print(a)
         except pymysql.err.InternalError as a:
             print (a)
-        except Exception as e:
+        except Exception as a:
             print(a)
 
 # 1 View cities by country function
-def view_city_by_country(ID, Name, CountryCode, District, Population, latitude, longitude):
+def view_city_by_country(id, Name, CountryCode, District, Population, latitude, longitude):
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj_MySql", cursorclass=pymysql.cursors.DictCursor)
 
     sql = """
@@ -36,7 +36,7 @@ def view_city_by_country(ID, Name, CountryCode, District, Population, latitude, 
 
     with db:
         cursor = db.cursor()
-        cursor.execute(sql, (ID, Name, CountryCode, District, Population, latitude, longitude))
+        cursor.execute(sql, (id, Name, CountryCode, District, Population, latitude, longitude))
         return cursor.fetchall()
         cursor.close()
         return results
