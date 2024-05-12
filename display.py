@@ -15,6 +15,25 @@ def get_numerical(message:str,error:str="Invalid input. Please enter a number")-
             print(error)
     return user_input
 
+# Defining input conditions
+def get_input_value(message:str,
+                    numerical:bool=False,
+                    select_from:list=[],
+                    error:str="Invalid input. Please enter a number")->str:
+    while True: # Loop until get a valid value
+        user_input = input(message).strip()
+        temp_user_input = user_input
+
+        if numerical:
+            if temp_user_input.isdigit():
+                break
+            else:
+                print(error)
+        else:
+            print(error)
+
+    return user_input
+
 # Display menu
 def display_menu():
     print("")
@@ -52,7 +71,7 @@ def main():
 
         elif (choice == "2"):
             ### Update city population 
-            city_id = (message="Enter a city ID: ",numerical = True)
+            city_id = get_input_value(message="Enter a city ID: ",numerical = True)
             applied_db.get_city(city_id=city_id)
 
             feedback,old_population,_ = applied_db.get_city(city_id=city_id)
@@ -62,15 +81,10 @@ def main():
                 print(feedback)
                 old_population = int(old_population)
 
-                user_input = (message="[I]ncrease/[D]ecrease Population: ",numerical = False,
-                    select_from = ['i','d'],error = "Invalid input. Please enter I or D"
-                )
+                user_input = get_input_value(message="[I]ncrease/[D]ecrease Population: ",numerical = False,select_from = ['i','d'],error = "Invalid input. Please enter I or D")
                 user_input = user_input.upper()
 
-                amount = (message="Enter Population {['Increase','Decrease'][['I','D'].index(user_input)]}: ",
-                    numerical = True,error="Invalid input. Please enter the amount of {['Increase',
-                        'Decrease'][['I','D'].index(user_input)]} (must be a number)"
-                )
+                amount = get_input_value(message="Enter Population {['Increase','Decrease'][['I','D'].index(user_input)]}: ",numerical = True,error="Invalid input. Please enter the amount")
                 amount = int(amount)
                 if user_input == 'I':
                     new_population = old_population + amount
@@ -84,11 +98,11 @@ def main():
         elif (choice == "3"):
             ### Add new person
             print("Enter person details: ")
-            personID = (message='ID: ',numerical = True,error = "Invalid input. Please enter a number")
-            personname = (message='Name: ',numerical = False,error = "Invalid input")
-            age = (message='Age: ',numerical = True,error = "Invalid input. Please enter a number")
-            salary = (message='Salary: ',numerical = True,error = "Invalid input. Please enter a number")
-            city = (message='City: ',numerical = True,error = "Invalid input. Please enter a number")
+            personID = get_input_value(message='ID: ',numerical = True,error = "Invalid input. Please enter a number")
+            personname = get_input_value(message='Name: ',numerical = False,error = "Invalid input")
+            age = get_input_value(message='Age: ',numerical = True,error = "Invalid input. Please enter a number")
+            salary = get_input_value(message='Salary: ',numerical = True,error = "Invalid input. Please enter a number")
+            city = get_input_value(message='City: ',numerical = True,error = "Invalid input. Please enter a number")
 
             # person_details = input("Enter person details (ID, Name, Age, Salary, City): ")
             applied_db.add_person(personID=personID,
@@ -100,7 +114,7 @@ def main():
 
         elif (choice == "4"):
             ### Delete person
-            person_id = (message="Enter person ID to be deleted: ",
+            person_id = get_input_value(message="Enter person ID to be deleted: ",
                 numerical = True,error = "Invalid input. Please enter person ID"
             )
             applied_db.delete_person(personID=person_id)
@@ -110,10 +124,10 @@ def main():
 
         elif (choice == "5"):
             ### View countries by population
-            operation = (message="Enter either < or > or =: ",numerical = False,
+            operation = get_input_value(message="Enter either < or > or =: ",numerical = False,
                 select_from = ['>','<','='],error = "Invalid input, please choose one operation < or > or ="
             )
-            population = (message="Enter Population: ",numerical = True,
+            population = get_input_value(message="Enter Population: ",numerical = True,
                 error = "Invalid input, please enter a number"
             )
 
@@ -124,8 +138,6 @@ def main():
             ### Show twinned cities
             twinned_cities = applied_db.show_twin_cities()
             if twinned_cities == []:
-                print("Invalid Neo4J connection")
-                else:
                 print("No twinned cities found")
             else:
                 sorted_list = sorted(twinned_cities)
@@ -136,7 +148,7 @@ def main():
                     display_menu()
         elif (choice == "7"):
             ### Twin with Dublin
-            city_id = (message="Enter ID of City to twin with Dublin: " ,numerical = True)
+            city_id = get_input_value(message="Enter ID of City to twin with Dublin: " ,numerical = True)
 
             feedback,_,city_details = applied_db.get_city(city_id=city_id)
             
@@ -161,7 +173,7 @@ def main():
                         else:
                             # Twin the city
                             if applied_db.twin_with_dub(city_id=city_id):
-                                print("Dublin is now twinned with" {city_details['Name']})
+                                print("Dublin is now twinned with" ['Name'])
                                 display_menu()
 
         elif (choice == "x"):

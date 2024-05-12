@@ -24,11 +24,14 @@ def view_city_by_country(id, Name, CountryCode, District, Population, latitude, 
     sql_query = "SELECT * FROM {city_table} WHERE CountryCode LIKE '{countrycode}'"
     
     with db:
+        cursor = db.cursor()
+        results = cursor.fetchall()
+        if len(results) == 0:
+                return None
+        try:    
             cursor.execute(sql_query)
-            results = cursor.fetchall()
-    
-    except pymysql.err.InterfaceError as e:
-        print("Error: {e}")
+        except pymysql.err.InterfaceError as e:
+            print("Error: {e}")
 
 def get_city(city_id:str)-> list:
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj", cursorclass=pymysql.cursors.DictCursor)
@@ -40,21 +43,22 @@ def get_city(city_id:str)-> list:
         cursor = db.cursor()
         cursor.execute(sql_query)
         # Get the city details
-        city_details = cursor.fetchone()
+        try:
+            city_details = cursor.fetchone()
         # Print(city_details['Name'])
-        if city_details is None:
-            return ['','','']
-        else:
-            old_population = city_details["Population"]
-            lines = ['','']
-            for key in city_details.keys():
-                return  ["DISPLAY TABLE TO BE CREATED JF"]
+            if city_details is None:
+                return ['','','']
+            else:
+                old_population = city_details["Population"]
+                lines = ['','']
+                for key in city_details.keys():
+                    return  ["DISPLAY TABLE TO BE CREATED JF"]
             
-    except pymysql.err.OperationalError as Er:
-        print('Error: {Er}')
+        except pymysql.err.OperationalError as Er:
+            print('Error: {Er}')
         
-    except Exception as Er:
-        print("Error in get_city : {Er} ")
+        except Exception as Er:
+            print("Error in get_city : {Er} ")
 
 def get_city_id(city_name:str)-> str:
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj", cursorclass=pymysql.cursors.DictCursor)
@@ -65,16 +69,18 @@ def get_city_id(city_name:str)-> str:
     with db:
         cursor = db.cursor()
         cursor.execute(sql_query)
+
+        try:
         # Get the city details
-        city_details = cursor.fetchone()
-        if city_details is None:
-            return ''
-        else:
-        # Return the city id
-            return city_details['ID']
+            city_details = cursor.fetchone()
+            if city_details is None:
+                return ''
+            else:
+            # Return the city id
+                return city_details['ID']
         
-    except Exception as Er:
-        print("Error in get_city id : {Er} ")
+        except Exception as Er:
+            print("Error in get_city id : {Er} ")
 
 # 2 Update city population function
 def update_city_pop(city_id:str,new_population:int)->None:
@@ -211,14 +217,14 @@ def show_twin_cities(Name) -> list:
         cursor = db.cursor()
 
     try:
-            if twinned_cities = []
+            if twinned_cities == []:
                     result = ("MATCH (a)-[r:TWINNED_WITH]->(b) RETURN a, r, b")
 
                     # Print the results
                     for record in result:
-                return twinned_cities
-        except Exception as Er:
-            print("Error in (show_twin_cities): {Er}")
+                        return twinned_cities
+    except Exception as Er:
+        print("Error in (show_twin_cities): {Er}")
 
 # 7 Twin with Dublin function
 def twin_with_dub(city_name:str="Dublin") -> list:
@@ -228,18 +234,16 @@ def twin_with_dub(city_name:str="Dublin") -> list:
         cursor = db.cursor()
         try:
             twinned_with_city = []
-            with ("MATCH (d:City), (c:City) WHERE d.name = $name AND EXISTS((d)-[:TWINNED_WITH]->(c)) RETURN c.name AS name, c.cid AS id", 
-                  name=city_name
-            )
+            with ("MATCH (d:City), (c:City) WHERE d.name = $name AND EXISTS((d)-[:TWINNED_WITH]->(c)) RETURN c.name AS name, c.cid AS id"):
                 # Print the result
-                for record:
-                twinned_with_city.append(record['id'])
+                for record in twinned_with_city:
+                    twinned_with_city.append(record['id'])
             
             return twinned_with_city
         except Exception as Er:
             print("Error in (neo4j_twinned_with func): {Er}")
 
-def twin_with_dub(city_id:str) -> bool:
+def twin_with_dub(city_id:str):
         try:
             dublin_id = get_city_id(city_name='Dublin')
             # Create a session
