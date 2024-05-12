@@ -109,8 +109,6 @@ def update_city_pop(city_id:str,new_population:int)->None:
 # 3 Add person function
 def add_person(personID:str, personname:str, age:str, salary:str, city:str) -> None:
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj", cursorclass=pymysql.cursors.DictCursor)
-
-    '''sql_query = "INSERT INTO person_table VALUES (%s, %s, %s, %s, %s)"'''
     
     with db:
         cursor = db.cursor()
@@ -148,7 +146,7 @@ def add_person(personID:str, personname:str, age:str, salary:str, city:str) -> N
 
     def show_person(person) -> str:
         try:
-            sql_query = "SELECT * FROM {person_table}"# WHERE personID = {personID}"
+            sql_query = "SELECT * FROM {person_table}"
             cursor = self.connection.cursor()
             cursor.execute(sql_query)
             results = cursor.fetchall()
