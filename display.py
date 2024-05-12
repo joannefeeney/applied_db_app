@@ -23,6 +23,8 @@ def get_input_value(message:str,
     while True: # Loop until get a valid value
         user_input = input(message).strip()
         temp_user_input = user_input
+        if '.' in user_input:
+            temp_user_input = user_input.replace('.', '')
 
         if numerical:
             if temp_user_input.isdigit():
@@ -30,7 +32,15 @@ def get_input_value(message:str,
             else:
                 print(error)
         else:
-            print(error)
+            user_input = user_input.strip().lower()
+            if select_from == [] and user_input != '':
+                break
+            elif user_input in select_from:
+                break
+            elif user_input == '':
+                continue
+            else:
+                print(error)
 
     return user_input
 
@@ -59,7 +69,7 @@ def main():
         if (choice == "1"):
             ### View cities by country
             country_code = input("Country Code: ")
-            applied_db.view_city_by_country(country_code=country_code)
+            applied_db.view_city_by_country(country_code)
             if len(applied_db.result_city_list) == 0:
                 if len(applied_db.result_country_list[0]) == 0:
                     print("No countries found for: " + country_code)
@@ -104,7 +114,7 @@ def main():
             salary = get_input_value(message='Salary: ',numerical = True,error = "Invalid input. Please enter a number")
             city = get_input_value(message='City: ',numerical = True,error = "Invalid input. Please enter a number")
 
-            # person_details = input("Enter person details (ID, Name, Age, Salary, City): ")
+            # Person_details
             applied_db.add_person(personID=personID,
                                    personname=personname,
                                    age=age,
@@ -119,33 +129,33 @@ def main():
             )
             applied_db.delete_person(personID=person_id)
 
-            print(applied_db.show_person())
+            print(person_id)
             display_menu()
 
         elif (choice == "5"):
             ### View countries by population
-            operation = get_input_value(message="Enter either < or > or =: ",numerical = False,
+            operation = get_input_value(message="Enter either < or > or = ",numerical = False,
                 select_from = ['>','<','='],error = "Invalid input, please choose one operation < or > or ="
             )
             population = get_input_value(message="Enter Population: ",numerical = True,
                 error = "Invalid input, please enter a number"
             )
 
-            print(applied_db.view_country_by_pop(operation=operation,population=population))
+            print(applied_db.view_country_by_pop(population))
             display_menu()
 
         elif (choice == "6"):
             ### Show twinned cities
-            twinned_cities = applied_db.show_twin_cities()
+            twinned_cities = applied_db.show_twin_cities('Name')
             if twinned_cities == []:
                 print("No twinned cities found")
             else:
-                sorted_list = sorted(twinned_cities)
                 print("Twinned Cities")
                 print("--------------")
-                for city in sorted_list:
+                for city in twinned_cities:
                     print("{city[0]} <-> {city[1]}")
                     display_menu()
+                    
         elif (choice == "7"):
             ### Twin with Dublin
             city_id = get_input_value(message="Enter ID of City to twin with Dublin: " ,numerical = True)
@@ -173,7 +183,7 @@ def main():
                         else:
                             # Twin the city
                             if applied_db.twin_with_dub(city_id=city_id):
-                                print("Dublin is now twinned with" ['Name'])
+                                print("Dublin is now twinned with selected city")
                                 display_menu()
 
         elif (choice == "x"):

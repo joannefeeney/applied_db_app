@@ -8,7 +8,7 @@ import pymysql.cursors
 
 
 # 1 View cities by country function
-def view_city_by_country(id, Name, CountryCode, District, Population, latitude, longitude):
+def view_city_by_country(country_name:str)->None:
     db = pymysql.connect(host="localhost", user="root", password="root", db="appDBproj", cursorclass=pymysql.cursors.DictCursor)
 
     sql_query = "SELECT * FROM {country_table} WHERE Name LIKE '%{name}%'"
